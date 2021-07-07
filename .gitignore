@@ -67,6 +67,7 @@ modules.order
 #
 !/initramfs.cpio.gz
 !/run_kernel.sh
+!/initramfs
 
 #
 # RPM spec file (make rpm-pkg)
