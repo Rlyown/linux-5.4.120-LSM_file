@@ -1,0 +1,8 @@
+# Core Platform Configuration Register
+#
+config CPCR
+    bool "Core Platform Configuration Register"
+    default n
+    select IMA
+    help
+      Enable cPCR
