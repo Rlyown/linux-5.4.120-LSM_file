@@ -32,6 +32,10 @@ do
             elif [ "$OPTARG"x = "init"x ]
             then
                 echo package the initramfs
+                echo "Copy Device file, permission needed!"
+                sudo rm -rf ./initramfs/dev/*
+                sudo cp -a /dev/null /dev/console /dev/tty /dev/tty1 /dev/tty2 /dev/tty3/ /dev/tty4 ./initramfs/dev/ 
+
                 cd initramfs
                 find . -print0 | cpio --null -ov --format=newc | gzip -9 > ../initramfs.cpio.gz
                 cd -
