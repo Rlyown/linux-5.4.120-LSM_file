@@ -33,6 +33,9 @@ do
             then
                 echo package the initramfs
                 cd initramfs
+		rm -rf dev/
+		mkdir dev
+		cp -a /dev/{null, console, tty, tty1, tty2, tty3, tty4} dev/
                 find . -print0 | cpio --null -ov --format=newc | gzip -9 > ../initramfs.cpio.gz
                 cd -
             fi
