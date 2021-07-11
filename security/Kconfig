@@ -231,6 +231,7 @@ config STATIC_USERMODEHELPER_PATH
 	  specify an empty string here (i.e. "").
 
 source "security/selinux/Kconfig"
+source "security/file_sec_opt/Kconfig"      #[+ zhangxiaolie modify]
 source "security/smack/Kconfig"
 source "security/tomoyo/Kconfig"
 source "security/apparmor/Kconfig"
@@ -244,6 +245,7 @@ source "security/integrity/Kconfig"
 choice
 	prompt "First legacy 'major LSM' to be initialized"
 	default DEFAULT_SECURITY_SELINUX if SECURITY_SELINUX
+	default DEFAULT_FILE_SECURITY_OPERATION if FILE_SECURITY_OPERATION   #[+zhangxiaolie modify]
 	default DEFAULT_SECURITY_SMACK if SECURITY_SMACK
 	default DEFAULT_SECURITY_TOMOYO if SECURITY_TOMOYO
 	default DEFAULT_SECURITY_APPARMOR if SECURITY_APPARMOR
@@ -260,6 +262,11 @@ choice
 
 	config DEFAULT_SECURITY_SELINUX
 		bool "SELinux" if SECURITY_SELINUX=y
+
+#[+ zhangxiaolie modify]
+	config DEFAULT_FILE_SECURITY_OPERATION
+		bool "file_sec_opt" if FILE_SECURITY_OPERATION=y
+#[+ zhangxiaolei modify]
 
 	config DEFAULT_SECURITY_SMACK
 		bool "Simplified Mandatory Access Control" if SECURITY_SMACK=y
@@ -278,6 +285,7 @@ endchoice
 config LSM
 	string "Ordered list of enabled LSMs"
 	default "lockdown,yama,loadpin,safesetid,integrity,smack,selinux,tomoyo,apparmor" if DEFAULT_SECURITY_SMACK
+	default "file_sec_opt" if FILE_SECURITY_OPERATION      #[+ zhangxiaolie modify]
 	default "lockdown,yama,loadpin,safesetid,integrity,apparmor,selinux,smack,tomoyo" if DEFAULT_SECURITY_APPARMOR
 	default "lockdown,yama,loadpin,safesetid,integrity,tomoyo" if DEFAULT_SECURITY_TOMOYO
 	default "lockdown,yama,loadpin,safesetid,integrity" if DEFAULT_SECURITY_DAC
