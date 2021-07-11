@@ -43,15 +43,10 @@ do
             then
                 echo package the initramfs
                 echo "Copy Device file, permission needed!"
-                sudo rm -rf ./initramfs/dev/*
-                sudo cp -a /dev/null /dev/console /dev/tty /dev/tty1 /dev/tty2 /dev/tty3 /dev/tty4 ./initramfs/dev/ 
-
                 cd initramfs
-		        rm -rf dev/ proc/ sys/
-		        mkdir sys
-		        mkdir proc
-		        mkdir dev
-		        cp -a /dev/{null,console,tty,tty1,tty2,tty3,tty4} dev/
+                sudo rm -rf dev/ proc/ sys/
+                mkdir sys proc dev
+                sudo cp -a /dev/{null,console,tty,tty1,tty2,tty3,tty4} dev/
                 find . -print0 | cpio --null -ov --format=newc | gzip -9 > ../initramfs.cpio.gz
                 cd -
             fi
