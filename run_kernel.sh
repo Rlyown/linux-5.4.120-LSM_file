@@ -8,6 +8,7 @@ print_help() {
     echo "    -m: Choose method."
     echo "         'debug': Start a qemu virtual machine."
     echo "         'init': Package the initramfs directory to the initramfs.cpio.gz. It used in qemu."
+    echo "         'build': Build the linux kernel just with stderr. Additionally, it will run make clean before."
 }
 
 if [ $# -eq 0 ]
@@ -49,6 +50,12 @@ do
                 sudo cp -a /dev/{null,console,tty,tty1,tty2,tty3,tty4} dev/
                 find . -print0 | cpio --null -ov --format=newc | gzip -9 > ../initramfs.cpio.gz
                 cd -
+            elif [ "$OPTARG"x = 'build'x ]
+            then
+                echo start build linux kernel
+                make clean
+                time make -j$(nproc) > /dev/null
+            fi
             fi
             ;;
         "?")
