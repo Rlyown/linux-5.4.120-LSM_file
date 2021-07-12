@@ -1,0 +1,10 @@
+config SECURITY_UOB
+    bool "UoB - LSM"
+    depends on SECURITY
+    depends on NET
+    depends on INET
+    select SECURITY_NETWORK
+    select SECURITYFS
+    default y
+    help
+        This our lab LSM module

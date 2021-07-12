@@ -1,8 +1,0 @@
-#Kconfig
-
-config FILE_SECURITY_OPERATION
-	bool "file_security_operation_support"
-	depends on SECURITY
-	default y
-	help 
-		introduction of demo of file security opeartion modules
