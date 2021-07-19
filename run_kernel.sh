@@ -56,7 +56,6 @@ do
                 make clean
                 time make -j$(nproc) > /dev/null
             fi
-            fi
             ;;
         "?")
             print_help
