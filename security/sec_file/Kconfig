@@ -1,0 +1,7 @@
+config SECURITY_FILE
+	bool "sec_file - LSM"
+	depends on SECURITY
+	select SECURITYFS
+	default y
+	help 
+		This is the security_file_operation modules.

@@ -1537,6 +1537,22 @@ static struct dentry *__lookup_hash(const struct qstr *name,
 		return ERR_PTR(-ENOMEM);
 
 	old = dir->i_op->lookup(dir, dentry, flags);
+    /*zhangxiaolei test begin*/
+//	printk("[+xiaolei] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+//    printk("[+xiaolei] - the value of 'dentry->d_name.name' is : %s\n", dentry->d_name.name);
+//	if (unlikely(old))
+//	{
+//		printk("[+xiaolei] - old isn`t null\n");
+//		printk("[+xiaolei] - the value of 'old->d_name.name' is : %s\n", old->d_name.name);
+//
+//	}
+//	else
+//	{
+//		printk("[+xiaolei] - old is null!!!!\n");
+//
+//	}
+    /*zhangxiaolei test end*/
+
 	if (unlikely(old)) {
 		dput(dentry);
 		dentry = old;
@@ -2354,6 +2370,10 @@ static int path_parentat(struct nameidata *nd, unsigned flags,
 				struct path *parent)
 {
 	const char *s = path_init(nd, flags);
+	/* zhangxiaolei test begin*/
+//	printk("[+xiaolei] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+//	printk("[+xiaolei] - the value of 's' is : %s",s);
+	/* zhangxiaolei test end*/
 	int err = link_path_walk(s, nd);
 	if (!err)
 		err = complete_walk(nd);
@@ -2377,6 +2397,11 @@ static struct filename *filename_parentat(int dfd, struct filename *name,
 		return name;
 	set_nameidata(&nd, dfd, name);
 	retval = path_parentat(&nd, flags | LOOKUP_RCU, parent);
+	/*zhangxiaolei test begin*/
+	//printk("[+xiaolei - %s - %s - %d] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+	//printk("[+xiaolei - %s - %s - %d] - the value of 'retval' is : %d\n", __FILE__, __func__,__LINE__, retval);
+	//printk("[+xiaolei - %s - %s - %d] - the value of 'nd->name' is : %s\n", __FILE__, __func__,__LINE__, nd.last.name);
+	/*zhangxiaolei test end*/
 	if (unlikely(retval == -ECHILD))
 		retval = path_parentat(&nd, flags, parent);
 	if (unlikely(retval == -ESTALE))
@@ -2390,6 +2415,9 @@ static struct filename *filename_parentat(int dfd, struct filename *name,
 		name = ERR_PTR(retval);
 	}
 	restore_nameidata();
+	/*zhangxiaolei test begin*/
+	//printk("[+xiaolei - %s - %s - %d] - the value of 'name.name' is : %s\n", __FILE__, __func__,__LINE__, name->name);
+	/*zhangxiaolei test end*/
 	return name;
 }
 
@@ -3973,6 +4001,10 @@ SYSCALL_DEFINE1(rmdir, const char __user *, pathname)
  */
 int vfs_unlink(struct inode *dir, struct dentry *dentry, struct inode **delegated_inode)
 {
+	/*zhangxiaolei test begin*/
+	//printk("[+xiaolei] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+
+	/*zhangxiaolei test end*/
 	struct inode *target = dentry->d_inode;
 	int error = may_delete(dir, dentry, 0);
 
@@ -4029,7 +4061,27 @@ long do_unlinkat(int dfd, struct filename *name)
 	struct inode *delegated_inode = NULL;
 	unsigned int lookup_flags = 0;
 retry:
+	/*zhangxiaolei test begin*/
+//printk("[+xiaolei - %s - %s - %d] - catch the hook of file_permission!!!\n", __FILE__, __func__,__LINE__);
+
+    //printk("[+xiaolei - %s - %s - %d] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+//    printk("[+xiaolei - %s - %s - %d] - before the 'filename_parentat' func !!!!!!\n", __FILE__, __func__,__LINE__);
+//	printk("[+xiaolei - %s - %s - %d] - the value of 'name->name' is : %s\n", __FILE__, __func__,__LINE__, name->name);
+//	printk("[+xiaolei - %s - %s - %d] - the value of 'name->iname' is : %s\n", __FILE__, __func__,__LINE__, name->iname);
+//	printk("[+xiaolei - %s - %s - %d] - the value of 'last.name' is %s\n", __FILE__, __func__,__LINE__, last.name);
+//	printk("[+xiaolei - %s - %s - %d] - the value of 'type' is %d\n", __FILE__, __func__,__LINE__, type);
+//	printk("[+xiaolei - %s - %s - %d] - the value of 'path.dentry->d_name.name' is %s\n", __FILE__, __func__,__LINE__, path.dentry->d_name.name);
+	/*zhangxiaolei test end*/
 	name = filename_parentat(dfd, name, lookup_flags, &path, &last, &type);
+	/*zhangxiaolei test begin*/
+    //printk("[+xiaolei] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+    printk("[+xiaolei - %s - %s - %d] - after the 'filename_parentat' func !!!!!!\n", __FILE__, __func__,__LINE__);
+	printk("[+xiaolei - %s - %s - %d] - the value of 'name->name' is : %s\n", __FILE__, __func__,__LINE__, name->name);
+	printk("[+xiaolei - %s - %s - %d] - the value of 'name->iname' is : %s\n", __FILE__, __func__,__LINE__, name->iname);
+	printk("[+xiaolei - %s - %s - %d] - the value of 'last.name' is %s\n", __FILE__, __func__,__LINE__, last.name);
+	printk("[+xiaolei - %s - %s - %d] - the value of 'type' is %d\n", __FILE__, __func__,__LINE__, type);
+	printk("[+xiaolei - %s - %s - %d] - the value of 'path.dentry->d_name.name' is %s\n", __FILE__, __func__,__LINE__, path.dentry->d_name.name);
+	/*zhangxiaolei test end*/
 	if (IS_ERR(name))
 		return PTR_ERR(name);
 
@@ -4043,6 +4095,8 @@ retry:
 retry_deleg:
 	inode_lock_nested(path.dentry->d_inode, I_MUTEX_PARENT);
 	dentry = __lookup_hash(&last, path.dentry, lookup_flags);
+	printk("[+xiaolei - %s - %s - %d] - after 'lookup_hash' !!!!!!!\n",  __FILE__, __func__,__LINE__);
+	printk("[+xiaolei - %s - %s - %d] - the value of 'dentry->d_name.name' is :%s\n",  __FILE__, __func__,__LINE__, dentry->d_name.name);
 	error = PTR_ERR(dentry);
 	if (!IS_ERR(dentry)) {
 		/* Why not before? Because we want correct error value */
@@ -4055,7 +4109,18 @@ retry_deleg:
 		error = security_path_unlink(&path, dentry);
 		if (error)
 			goto exit2;
+		/*zhangxiaolei test begin*/
+		//printk("[+xiaolei - %s - %s - %d] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+		printk("[+xiaolei - %s - %s - %d] - the value of the 'path.dentry->d_inode->i_ino' is :%d\n",  __FILE__, __func__,__LINE__, path.dentry->d_inode->i_ino);
+		//printk("[+xiaolei - %s - %s - %d] - the value of the 'delegated_inode->i_ino' is :%d\n",  __FILE__, __func__,__LINE__, delegated_inode->i_ino);
+		/*zhangxiaolei test end*/
 		error = vfs_unlink(path.dentry->d_inode, dentry, &delegated_inode);
+		/*zhangxiaolei test begin*/
+		//printk("[+xiaolei - %s - %s - %d] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+		printk("[+xiaolei - %s - %s - %d] - the value of the 'path.dentry->d_inode->i_ino' is :%d\n",  __FILE__, __func__,__LINE__, path.dentry->d_inode->i_ino);
+		printk("[+xiaolei - %s - %s - %d] - the value of the 'delegated_inode->i_ino' is :%d\n",  __FILE__, __func__,__LINE__, delegated_inode->i_ino);
+		printk("[+xiaolei - %s - %s - %d] - the value of the 'error' is : %d\n",  __FILE__, __func__,__LINE__, error);
+		/*zhangxiaolei test end*/
 exit2:
 		dput(dentry);
 	}
@@ -4096,12 +4161,19 @@ SYSCALL_DEFINE3(unlinkat, int, dfd, const char __user *, pathname, int, flag)
 
 	if (flag & AT_REMOVEDIR)
 		return do_rmdir(dfd, pathname);
-
+	printk("[+xiaolei - %s - %s - %d] - this is the 'unlinkat' func !!!\n");
+	//printk("[+xiaolei - %s - %s - %d] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+	printk("[+xiaolei - %s - %s - %d] - the value of 'flag' is : %d", __FILE__, __func__,__LINE__, flag);
+	printk("[+xiaolei - %s - %s - %d] - the value of 'dfd' is %d", dfd);
+	printk("[+xiaolei - %s - %s - %d] - the value of delet file name is : %s", __FILE__, __func__,__LINE__, getname(pathname)->name);
 	return do_unlinkat(dfd, getname(pathname));
 }
 
 SYSCALL_DEFINE1(unlink, const char __user *, pathname)
 {
+	printk("[+xiaolei - %s - %s - %d] - this is the 'unlink' func !!!\n", __FILE__, __func__,__LINE__);
+	//printk("[+xiaolei - %s - %s - %d]- File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+	printk("[+xiaolei - %s - %s - %d] - the value of delet file name is : %s", __FILE__, __func__,__LINE__, getname(pathname)->name);
 	return do_unlinkat(AT_FDCWD, getname(pathname));
 }
 

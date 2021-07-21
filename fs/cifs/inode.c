@@ -1351,7 +1351,10 @@ int cifs_unlink(struct inode *dir, struct dentry *dentry)
 	__u32 dosattr = 0, origattr = 0;
 
 	cifs_dbg(FYI, "cifs_unlink, dir=0x%p, dentry=0x%p\n", dir, dentry);
-
+	/*zhangxiaolei test begin*/
+	printk("[+xiaolei] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+	printk("[+xiaolei] - this is the actuly unlink func!!!!");
+	/*zhangxiaolei test end*/
 	tlink = cifs_sb_tlink(cifs_sb);
 	if (IS_ERR(tlink))
 		return PTR_ERR(tlink);
@@ -1442,6 +1445,10 @@ unlink_out:
 	kfree(attrs);
 	free_xid(xid);
 	cifs_put_tlink(tlink);
+	/*zhangxiaolei test begin*/
+	printk("[+xiaolei] - File name is : %s, function name is : %s, line is %d\n", __FILE__, __func__,__LINE__);
+	printk("[+xiaolei] - the value of rc is : %d", rc);
+	/*zhangxiaolei test end*/
 	return rc;
 }
 
